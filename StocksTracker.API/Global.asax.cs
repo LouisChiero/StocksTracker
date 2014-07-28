@@ -6,7 +6,9 @@ using System.Web;
 using System.Web.Http;
 using Autofac;
 using Autofac.Integration.WebApi;
+using Core.Framework.API.Charts;
 using Core.Framework.API.Data;
+using Core.Framework.API.Headlines;
 using Core.Framework.API.Quotes;
 using Core.Framework.API.Stocks;
 using Core.Framework.API.Support;
@@ -58,6 +60,8 @@ namespace StocksTracker.API
             builder.RegisterType<StockTrackersService>().As<IStockTrackers>().SingleInstance();
             builder.RegisterType<StockQuoteService>().As<IStockQuoteService>().SingleInstance();
             builder.RegisterType<StockUpdater>().As<IStockUpdater>().SingleInstance();
+            builder.RegisterType<StockHeadlinesService>().As<IStockHeadlinesService>().SingleInstance();
+            builder.RegisterType<StockChartsService>().As<IStockChartsService>().SingleInstance();
 
             // register objects used in user authentication/authorization
             builder.RegisterType<UserAdministration.UserAdministration>().As<IUserAdministration>().SingleInstance();

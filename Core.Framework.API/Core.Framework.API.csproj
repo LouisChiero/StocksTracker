@@ -39,8 +39,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Charts\IStockChartsService.cs" />
+    <Compile Include="Charts\StockChartQueryParameters.cs" />
+    <Compile Include="Charts\StockChartSize.cs" />
+    <Compile Include="Charts\StockChartTimeSpan.cs" />
+    <Compile Include="Charts\StockChartType.cs" />
     <Compile Include="Data\ICache.cs" />
     <Compile Include="Data\ICacheManager.cs" />
+    <Compile Include="Headlines\Headlines.cs" />
+    <Compile Include="Headlines\IStockHeadlinesService.cs" />
+    <Compile Include="Headlines\NewsItem.cs" />
+    <Compile Include="Headlines\Xml\Headlines.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StocksTrackerException.cs" />
     <Compile Include="Stocks\IStocks.cs" />
