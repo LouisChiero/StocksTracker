@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Entity.Core;
 using System.Globalization;
+using System.Linq;
 using Core.Framework.API.Charts;
 using Core.Framework.API.Data;
 using Core.Framework.API.Stocks;
@@ -22,7 +23,21 @@ namespace StocksTracker.API.Services
         /// <see cref="IStockChartsService.GetStockChartResource"/>
         public Uri GetStockChartResource(StockChartQueryParameters chartQueryParameters)
         {
-            var stock = _stockCache.GetById(chartQueryParameters.StockId);
+            StockRecord stock;
+            if (chartQueryParameters.QueryById)
+            {
+                stock = _stockCache.GetById(chartQueryParameters.StockId);
+            }
+            else
+            {
+                stock =
+                    _stockCache.GetAll()
+                        .SingleOrDefault(
+                            record =>
+                                String.Equals(record.TickerSymbol, chartQueryParameters.TickerSymbol,
+                                    StringComparison.InvariantCultureIgnoreCase));
+            }
+
             if (stock == null)
                 throw new ObjectNotFoundException();
 
@@ -36,22 +51,24 @@ namespace StocksTracker.API.Services
                     {
                         switch (span)
                         {
+                            case StockChartTimeSpan.OneDay:
+                                return "1d";
                             case StockChartTimeSpan.FiveDays:
                                 return "5d";
+                            case StockChartTimeSpan.OneMonth:
+                                return "1m";
+                            case StockChartTimeSpan.ThreeMonths:
+                                return "3m";
+                            case StockChartTimeSpan.SixMonths:
+                                return "6m";
+                            case StockChartTimeSpan.OneYear:
+                                return "1y";
+                            case StockChartTimeSpan.TwoYears:
+                                return "2y";
                             case StockChartTimeSpan.FiveYears:
                                 return "5y";
                             case StockChartTimeSpan.Maximum:
                                 return "my";
-                            case StockChartTimeSpan.OneDay:
-                                return "1d";
-                            case StockChartTimeSpan.OneYear:
-                                return "1y";
-                            case StockChartTimeSpan.SixMonths:
-                                return "6m";
-                            case StockChartTimeSpan.ThreeMonths:
-                                return "3m";
-                            case StockChartTimeSpan.TwoYears:
-                                return "2y";
                         }
 
                         return null;

@@ -1,0 +1,51 @@
+﻿<aside class="col-sm-3 col-md-2" data-cc-sidebar data-ng-controller="sidebar as vm">
+    <div class="sidebar-filler"></div>
+    <div class="sidebar-dropdown"><!--<a href="#">Menu</a>--></div>
+    <div class="sidebar-inner" data-ng-show="vm.showResources">
+        <div class="sidebar-widget">
+            <a href="" ng-click="vm.createNewStockTracker()">+ Create New Stock Tracker</a>
+        </div>
+        
+        <ul style="list-style:none; padding-left:0; margin-bottom:0">
+            <li style="float:none" data-ng-repeat="r in vm.navRoutes" data-ng-class="vm.isActive(r)">
+                
+                <a style="width:75%; border-radius:4px; position:relative; display:block; float:left; padding-right:15px; padding-top:10px" data-ng-href="#{{r.url}}" title="{{r.display}}">
+                    {{r.display}}
+                    <span class="badge pull-right">{{r.stocks}}</span>
+                </a>
+                
+                <div class="btn-group-xs" dropdown>
+                    <a style="float:left; margin-top:8px; margin-left:3px" class="btn btn-xs btn-primary dropdown-toggle" title="View options for {{r.display}}">
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        <li><a href="" ng-click="vm.renameStockTracker(r)">Rename {{r.display}}</a></li>
+                        <li><a href="" ng-click="vm.deleteStockTracker(r)">Delete {{r.display}}</a></li>
+                    </ul>
+                </div>  
+
+            </li>
+        </ul>
+
+        <!--<ul class="nav nav-pills nav-stacked">
+            <li data-ng-repeat="r in vm.navRoutes" data-ng-class="vm.isActive(r)">
+                
+                <a data-ng-href="#{{r.url}}" title="{{r.display}}">
+                    {{r.display}}
+                    <span class="badge pull-right">{{r.stocks}}</span>
+                </a>
+
+                <div class="btn-group-xs" dropdown>
+                    <a class="btn btn-xs btn-primary dropdown-toggle" title="View options for {{r.display}}">
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="" ng-click="vm.renameStockTracker()">Rename</a></li>
+                        <li><a href="" ng-click="vm.deleteStockTracker()">Delete</a></li>
+                    </ul>
+                </div>  
+            </li>
+            
+        </ul>-->
+    </div>
+</aside>

@@ -51,7 +51,7 @@ namespace StocksTracker.API.Authorization
             context.Request.Context.Authentication.SignIn(cookiesIdentity);
         }
 
-        /// <see cref="OAuthAuthorizationServerProvider.GrantResourceOwnerCredentials"/>
+        /// <see cref="OAuthAuthorizationServerProvider.TokenEndpoint"/>
         public override Task TokenEndpoint(OAuthTokenEndpointContext context)
         {
             foreach (KeyValuePair<string, string> property in context.Properties.Dictionary)
@@ -62,7 +62,7 @@ namespace StocksTracker.API.Authorization
             return Task.FromResult<object>(null);
         }
 
-        /// <see cref="OAuthAuthorizationServerProvider.GrantResourceOwnerCredentials"/>
+        /// <see cref="OAuthAuthorizationServerProvider.ValidateClientAuthentication"/>
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
             // Resource owner password credentials does not provide a client ID.

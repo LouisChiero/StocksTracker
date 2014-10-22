@@ -32,7 +32,7 @@ namespace StocksTracker.API.Controllers
             try
             {
                 var stocks = await _stocksService.GetStocksAsync();
-                return Ok(stocks.Select(MapStockRecordToObject));
+                return Ok(stocks.Select(record => MapStockRecordToObject(record)));
             }
             catch (Exception ex)
             {
@@ -42,7 +42,7 @@ namespace StocksTracker.API.Controllers
 
         // GET api/Stocks/1
         [HttpGet]
-        [Route("{id:int}", Name = GetStockRouteName)]
+        [Route("{id:int}", Name = GetStockByIdRouteName)]
         public async Task<IHttpActionResult> Get(int id)
         {
             if (id == 0)
@@ -52,6 +52,27 @@ namespace StocksTracker.API.Controllers
             try
             {
                 stock = await _stocksService.GetStockAsync(id);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+
+            if (stock == null)
+                return NotFound();
+
+            return Ok(MapStockRecordToObject(stock, GetStockByIdRouteName));
+        }
+
+        // GET api/Stocks/MSFT
+        [HttpGet]
+        [Route("{ticker}", Name = GetStockByTickerRouteName)]
+        public async Task<IHttpActionResult> Get(string ticker)
+        {
+            StockRecord stock;
+            try
+            {
+                stock = await _stocksService.GetStockAsync(ticker);
             }
             catch (Exception ex)
             {
@@ -80,5 +101,5 @@ namespace StocksTracker.API.Controllers
 
 /*
      * LouisChiero/fitzwell
-     * VujGot3QEUY6tB4GPoevwHlHVOJ7Ezed0gs_3x-N_Cp7DX1zwnAssLO4vw4E5ulIhckh8GFQawZHHMWKoN8arC0HzENbmxKMwQkPHUEENPE3wxSrfkRUhnLvo3GwLoEjJZXx9jbGhKVTVmoEOVJhihpXz9Zz75RFpcUoV-ceRSOJF1W_MW8zKAxOAuvTFWSIdxvnUeG7uUFiP7jAUk87ZrZ1AUj5wG6Uwk-6P_yMfGgA_h75q67O360kJQ86S0IDAPNd7DqaA3wRvNScinxIIp-j76tqiEFc5SjTQlXoaezfiQTISy2z8BTwg3cnG2Ir-EzhvzLSlaGdkasdkYYISbWxvxaXUZd2bTJIW8RFe3WnrwdsDeWbjEqjAG2UE-cH0xi3Wgn-TqUpr_kpK3Zzq0vKRJE3UZBaWGcSj20nY3j40sdUfuQTkn7VHg9M7Re8J95F-4ws_d-1fncLPF44HdUeh_675MjVyIDhXYXqZKshkYY_423xVIkUqPyR2sNXmO8AxTAvZlRhkhZ0laYrRw
+     * _nP-_9ybjhVMXOHKjX-Uz9SdPQprH7dJoGIOelkZ1umiAbgXIfQ-HNXiuxCFGINs9ax0YQ7eV2RxcOUvtXpkv08OfMvEWK9LtYOLkmYfA0eh8SpiHenK0n1lrxedd019k1fdBgrzM6kp0AwHh__73nl1pIct_BJV6BH1h0UbNmkK8A_OVR-HPiYJiO1ZhAIVXHDJz8pUHDvE8aP0sM-IwKZM0O48UU1NXtTN9kJ2Co1i5e6JmuYA2EygD8nO15y86ViKAu7-s2mteIBgrNjZCjlowMsemKYgWktg48baIPybkqRKRCMxFfFBr9PeOWJyaUj_LlHEexn8050SNJnfLpwJmTPhyEaKCdrCOARumZQtc2P6cChsuXAO7gzXmuuRvjAEHfNiLcERXvR3xvJnyF8Z1ETFZpcbsGfv8-DimMKjWaHXHhOl9ys8oWuvL_ocncCjq5yC-fO5txCOVIglkeqXxDLfekrEd5md72CEq-w
      */

@@ -7,11 +7,12 @@
     {
         OneDay = 0,
         FiveDays = 1,
-        ThreeMonths = 2,
-        SixMonths = 3,
-        OneYear = 4,
-        TwoYears = 5,
-        FiveYears = 6,
-        Maximum = 7
+        OneMonth = 2,
+        ThreeMonths = 3,
+        SixMonths = 4,
+        OneYear = 5,
+        TwoYears = 6,
+        FiveYears = 7,
+        Maximum = 8
     }
 }

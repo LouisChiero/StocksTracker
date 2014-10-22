@@ -44,6 +44,24 @@ namespace StocksTracker.API.Controllers
             return Ok(MapHeadlinesToObject(headlines));
         }
 
+        // GET api/Stocks/NFLX/Headlines
+        [HttpGet]
+        [Route("api/Stocks/{ticker}/Headlines")]
+        public async Task<IHttpActionResult> Get(string ticker)
+        {
+            Headlines headlines;
+            try
+            {
+                headlines = await _stockHeadlinesService.GetStockHeadlinesAsync(ticker);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+
+            return Ok(MapHeadlinesToObject(headlines));
+        }
+
         private static object MapHeadlinesToObject(Headlines headlines)
         {
             return new

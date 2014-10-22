@@ -1,0 +1,12 @@
+C:\Users\Louis\SkyDrive\Development\git\StocksTracker\Client.Angular\bin\Client.Angular.dll.config
+C:\Users\Louis\SkyDrive\Development\git\StocksTracker\Client.Angular\bin\Client.Angular.dll
+C:\Users\Louis\SkyDrive\Development\git\StocksTracker\Client.Angular\bin\Client.Angular.pdb
+C:\Users\Louis\SkyDrive\Development\git\StocksTracker\Client.Angular\obj\Debug\Client.Angular.csprojResolveAssemblyReference.cache
+C:\Users\Louis\SkyDrive\Development\git\StocksTracker\Client.Angular\obj\Debug\Client.Angular.dll
+C:\Users\Louis\SkyDrive\Development\git\StocksTracker\Client.Angular\obj\Debug\Client.Angular.pdb
+C:\Users\lchiero\SkyDrive\Development\git\StocksTracker\Client.Angular\bin\Client.Angular.dll.config
+C:\Users\lchiero\SkyDrive\Development\git\StocksTracker\Client.Angular\bin\Client.Angular.dll
+C:\Users\lchiero\SkyDrive\Development\git\StocksTracker\Client.Angular\bin\Client.Angular.pdb
+C:\Users\lchiero\SkyDrive\Development\git\StocksTracker\Client.Angular\obj\Debug\Client.Angular.csprojResolveAssemblyReference.cache
+C:\Users\lchiero\SkyDrive\Development\git\StocksTracker\Client.Angular\obj\Debug\Client.Angular.dll
+C:\Users\lchiero\SkyDrive\Development\git\StocksTracker\Client.Angular\obj\Debug\Client.Angular.pdb

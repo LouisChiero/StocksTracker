@@ -1,0 +1,17 @@
+﻿<div data-ng-controller="addToStockTracker as vm">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-ng-click="cancel()">&times;</button>
+        <h3>{{title}}</h3>
+    </div>
+    <form name="addToStockTrackerForm" novalidate>
+        <div class="modal-body">
+            <select name="selectedStockTracker" required ng-model="selectedStockTracker" ng-options="item.name for item in items">
+                <option value="">-- Select Stock Tracker --</option>
+            </select>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" data-ng-click="ok(addToStockTrackerForm)" ng-disabled="!addToStockTrackerForm.$valid">{{saveText}}</button>
+            <button class="btn btn-info" data-ng-click="cancel()">{{cancelText}}</button>
+        </div>
+    </form>
+</div>

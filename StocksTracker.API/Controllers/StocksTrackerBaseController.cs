@@ -10,7 +10,8 @@ namespace StocksTracker.API.Controllers
     /// </summary>
     public class StocksTrackerBaseController : ApiController
     {
-        protected const string GetStockRouteName = "GetStockById";
+        protected const string GetStockByTickerRouteName = "GetStockByTicker";
+        protected const string GetStockByIdRouteName = "GetStockById";
         protected const string GetStockTrackerRouteName = "GetStockTrackerById";
 
         protected string BuildUrl(string routeName, object routeValues)
@@ -19,7 +20,7 @@ namespace StocksTracker.API.Controllers
             return Url.Link(routeName, routeValues);
         }
 
-        protected object MapStockRecordToObject(StockRecord stock)
+        protected object MapStockRecordToObject(StockRecord stock, string routeName = GetStockByTickerRouteName)
         {
             return new
             {
@@ -34,7 +35,7 @@ namespace StocksTracker.API.Controllers
                 yearLow = stock.YearLow,
                 previousClose = stock.PreviousClose,
                 lastUpdated = stock.LastUpdatedDateTimeUniversal.HasValue ? stock.LastUpdatedDateTimeUniversal.Value.ToLocalTime().Date : new DateTime?(),
-                url = BuildUrl(GetStockRouteName, new{id = stock.StockRecordId})
+                url = routeName == GetStockByTickerRouteName ? BuildUrl(routeName, new {ticker = stock.TickerSymbol}) : BuildUrl(routeName, new{id = stock.StockRecordId})
             };
         }
 
@@ -45,7 +46,7 @@ namespace StocksTracker.API.Controllers
                 id = stockTracker.StockTrackerRecordId,
                 name = stockTracker.Name,
                 isDefault = stockTracker.IsDefault,
-                stocks = stockTracker.Stocks != null ? stockTracker.Stocks.Select(MapStockRecordToObject).ToArray() : new object[]{},
+                stocks = stockTracker.Stocks != null ? stockTracker.Stocks.Select(record => MapStockRecordToObject(record)).ToArray() : new object[]{},
                 url = BuildUrl(GetStockTrackerRouteName, new {id = stockTracker.StockTrackerRecordId})
             };
         }

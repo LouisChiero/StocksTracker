@@ -25,9 +25,9 @@ namespace StocksTracker.API.Controllers
         [HttpGet]
         [Route("api/Stocks/{stockId:int}/Charts")]
         public IHttpActionResult Get(int stockId, 
-            StockChartTimeSpan timeSpan = StockChartTimeSpan.OneDay, 
+            StockChartTimeSpan timeSpan = StockChartTimeSpan.OneYear, 
             StockChartType chartType = StockChartType.Line, 
-            StockChartSize chartSize = StockChartSize.Small)
+            StockChartSize chartSize = StockChartSize.Large)
         {
             if (stockId == 0)
                 BadRequest();
@@ -36,8 +36,8 @@ namespace StocksTracker.API.Controllers
             try
             {
                 chartUri =
-                    _stockChartsService.GetStockChartResource(new StockChartQueryParameters(stockId, timeSpan, chartType,
-                        chartSize));
+                    _stockChartsService.GetStockChartResource(new StockChartQueryParameters(timeSpan, chartType,
+                        chartSize, stockId));
             }
             catch (Exception ex)
             {
@@ -45,6 +45,29 @@ namespace StocksTracker.API.Controllers
             }
 
             return Ok(new {url = chartUri.ToString()});
+        }
+
+        // GET api/Stocks/AAPL/Charts?timeSpan=OneYear&chartType=Bar&chartSize=Middle
+        [HttpGet]
+        [Route("api/Stocks/{ticker}/Charts")]
+        public IHttpActionResult Get(string ticker,
+            StockChartTimeSpan timeSpan = StockChartTimeSpan.OneYear,
+            StockChartType chartType = StockChartType.Line,
+            StockChartSize chartSize = StockChartSize.Large)
+        {
+            Uri chartUri;
+            try
+            {
+                chartUri =
+                    _stockChartsService.GetStockChartResource(new StockChartQueryParameters(timeSpan, chartType,
+                        chartSize, tickerSymbol: ticker));
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+
+            return Ok(new { url = chartUri.ToString() });
         }
     }
 }

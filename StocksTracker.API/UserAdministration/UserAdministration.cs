@@ -84,5 +84,77 @@ namespace StocksTracker.API.UserAdministration
                 }
             }
         }
+
+        /// <see cref="IUserAdministration.RoleExists"/>
+        public bool RoleExists(string roleName)
+        {
+            using (var ctx = _stocksTrackerContextFactory.GetObject())
+            {
+                using (var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(ctx)))
+                {
+                    return roleManager.RoleExists(roleName);
+                }
+            }
+        }
+
+        /// <see cref="IUserAdministration.CreateRole"/>
+        public IdentityResult CreateRole(string roleName)
+        {
+            using (var ctx = _stocksTrackerContextFactory.GetObject())
+            {
+                using (var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(ctx)))
+                {
+                    return roleManager.Create(new IdentityRole(roleName));
+                }
+            }
+        }
+
+        /// <see cref="IUserAdministration.FindByUserName"/>
+        public User FindByUserName(string userName)
+        {
+            using (var ctx = _stocksTrackerContextFactory.GetObject())
+            {
+                using (var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(ctx)))
+                {
+                    var user = userManager.FindByName(userName);
+                    if (user != null)
+                        return user.MapUserRecord();
+                }
+            }
+
+            return null;
+        }
+
+        /// <see cref="IUserAdministration.CreateUser"/>
+        public IdentityResult CreateUser(User user, string password)
+        {
+            using (var ctx = _stocksTrackerContextFactory.GetObject())
+            {
+                using (var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(ctx)))
+                {
+                    var newUser = new ApplicationUser
+                    {
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        Email = user.Identity.Email,
+                        UserName = user.Identity.UserName
+                    };
+
+                    return userManager.Create(newUser, password);
+                }
+            }
+        }
+
+        /// <see cref="IUserAdministration.CreateUser"/>
+        public IdentityResult AddRoleToUser(string userId, string roleName)
+        {
+            using (var ctx = _stocksTrackerContextFactory.GetObject())
+            {
+                using (var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(ctx)))
+                {
+                    return userManager.AddToRole(userId, roleName);
+                }
+            }
+        }
     }
 }

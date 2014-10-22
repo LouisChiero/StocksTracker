@@ -93,10 +93,6 @@ namespace StocksTracker.API
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
             HttpContext.Current.Items[IocContainer] = _container;
-
-            // load data cache(s) before application launch
-            _container.Resolve<ICacheManager>().LoadDataCache();
-      
         }
 
         protected void Application_End()

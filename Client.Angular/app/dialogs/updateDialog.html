@@ -1,0 +1,15 @@
+﻿<div data-ng-controller="updateStockTracker as vm">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" data-ng-click="cancel()">&times;</button>
+        <h3>{{title}}</h3>
+    </div>
+    <form name="updateStockTrackerForm" novalidate>
+        <div class="modal-body">
+            <input type="text" required autofocus name="stockTrackerName" ng-model="stockTrackerName" />
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" data-ng-click="ok(updateStockTrackerForm)" ng-disabled="!updateStockTrackerForm.$valid">{{saveText}}</button>
+            <button class="btn btn-info" data-ng-click="cancel()">{{cancelText}}</button>
+        </div>
+    </form>
+</div>

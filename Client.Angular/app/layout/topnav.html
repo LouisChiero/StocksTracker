@@ -1,0 +1,44 @@
+﻿<nav class="navbar navbar-default" role="navigation" data-ng-controller="topnav as vm">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="btn navbar-btn navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="navbar-brand" href="#/home"><span class="glyphicon glyphicon-home"></span>&nbsp;Stocks Tracker</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse">
+            <!-- show for authenticated user -->
+            <div data-ng-show="vm.showResources">
+                <div class="navbar-form navbar-right">
+                    <div class="form-group">
+                        <input type="search"
+                               autofocus
+                               ng-model="asyncSelected"
+                               placeholder="Enter ticker or name"
+                               typeahead="stock.ticker + ' ' + stock.name for stock in vm.searchStocks($viewValue)"
+                               typeahead-loading="searching"
+                               typeahead-min-length="2"
+                               typeahead-on-select="vm.done($item, $model, $label)"
+                               class="form-control">
+                        <i ng-show="searching" class="glyphicon glyphicon-refresh"></i>
+                    </div>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><p class="navbar-text">Signed in as <a href="" class="navbar-link">{{vm.loggedInUserName}}</a></p></li>
+                    <li><a href="" data-ng-click="vm.logout()">Logout</a></li>
+                </ul>
+            </div>
+            <!-- show for unauthenticated user -->
+            <div data-ng-show="!vm.showResources">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="" data-ng-click="vm.login()">Login</a></li>
+                    <li><a href="" data-ng-click="vm.register()">Register</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

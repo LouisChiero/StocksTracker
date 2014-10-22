@@ -5,7 +5,7 @@ namespace Core.Framework.API.Stocks
     /// <summary>
     /// Class provides access to properties of a stock record.
     /// </summary>
-    public class StockRecord
+    public class StockRecord : IEquatable<StockRecord>
     {
         /// <summary>
         /// Gets and sets the stock record id value.
@@ -61,5 +61,35 @@ namespace Core.Framework.API.Stocks
         /// Gets and sets the stock last updated value.
         /// </summary>
         public DateTimeOffset? LastUpdatedDateTimeUniversal { get; set; }
+
+        /// <see cref="System.IEquatable&lt;T&gt;.Equals(T)"/>
+        public bool Equals(StockRecord other)
+        {
+            if (other == null)
+                return false;
+
+            return ((StockRecordId == other.StockRecordId)
+                && (TickerSymbol == other.TickerSymbol));
+        }
+
+        /// <see cref="System.Object.Equals(object)"/>
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            StockRecord other = obj as StockRecord;
+            if (other == null)
+                return false;
+
+            return ((StockRecordId == other.StockRecordId)
+                && (TickerSymbol == other.TickerSymbol));
+        }
+
+        /// <see cref="System.Object.GetHashCode"/>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode() * 32;
+        }
     }
 }

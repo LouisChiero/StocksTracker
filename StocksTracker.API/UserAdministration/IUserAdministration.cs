@@ -39,5 +39,42 @@ namespace StocksTracker.API.UserAdministration
         /// <param name="authenticationType">The type of authentication for the new claims identity.</param>
         /// <returns>The new claims identity.</returns>
         Task<ClaimsIdentity> CreateIdentityAsync(User user, string authenticationType);
+
+        /// <summary>
+        /// Checks if a role exists for a role name.
+        /// </summary>
+        /// <param name="roleName">The role name.</param>
+        /// <returns>True if the role exists, or false if the role does not exist.</returns>
+        bool RoleExists(string roleName);
+
+        /// <summary>
+        /// Creates a role for a role name.
+        /// </summary>
+        /// <param name="roleName">The role name.</param>
+        /// <returns>The result of the operation.</returns>
+        IdentityResult CreateRole(string roleName);
+
+        /// <summary>
+        /// Gets a user for the given user name.
+        /// </summary>
+        /// <param name="userName">The user name.</param>
+        /// <returns>A <see cref="User"/> object, or null if user cannot be found.</returns>
+        User FindByUserName(string userName);
+
+        /// <summary>
+        /// Creates a user for the given user name and password.
+        /// </summary>
+        /// <param name="user">The <see cref="User"/> object.</param>
+        /// <param name="password">The user password.</param>
+        /// <returns>The result of the operation.</returns>
+        IdentityResult CreateUser(User user, string password);
+
+        /// <summary>
+        /// Adds a role to a user.
+        /// </summary>
+        /// <param name="userId">The user ID.</param>
+        /// <param name="roleName">The role name.</param>
+        /// <returns>The result of the operation.</returns>
+        IdentityResult AddRoleToUser(string userId, string roleName);
     }
 }

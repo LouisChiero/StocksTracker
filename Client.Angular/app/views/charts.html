@@ -1,0 +1,8 @@
+﻿<section data-ng-controller="charts as vm">
+    <div>
+        <select ng-model="vm.selectedTimeSpan" ng-options="ts.option for ts in vm.timeSpanOptions" ng-change="vm.updateUrl()"></select>    
+        <select ng-model="vm.selectedType" ng-options="t.option for t in vm.typeOptions" ng-change="vm.updateUrl()"></select>
+        <select ng-model="vm.selectedSize" ng-options="s.option for s in vm.sizeOptions" ng-change="vm.updateUrl()"></select>
+    </div>
+    <img ng-cloak ng-src="{{vm.url}}" title="Chart for {{vm.ticker}}" alt="Chart for {{vm.ticker}}"/>
+</section>

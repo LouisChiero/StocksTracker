@@ -6522,7 +6522,6 @@ namespace Data.Context.Migrations
                 stocks.Single(s => s.TickerSymbol == "INTC").StockId,
                 stocks.Single(s => s.TickerSymbol == "ADBE").StockId,
                 stocks.Single(s => s.TickerSymbol == "ORCL").StockId,
-                stocks.Single(s => s.TickerSymbol == "DELL").StockId,
                 stocks.Single(s => s.TickerSymbol == "AMZN").StockId
             };
 
