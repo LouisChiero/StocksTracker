@@ -1,0 +1,5 @@
+C:\Users\Louis\SkyDrive\Development\git\StocksTracker\Core.Framework.API\bin\Release\Core.Framework.API.dll
+C:\Users\Louis\SkyDrive\Development\git\StocksTracker\Core.Framework.API\bin\Release\Core.Framework.API.pdb
+C:\Users\Louis\SkyDrive\Development\git\StocksTracker\Core.Framework.API\obj\Release\Core.Framework.API.csprojResolveAssemblyReference.cache
+C:\Users\Louis\SkyDrive\Development\git\StocksTracker\Core.Framework.API\obj\Release\Core.Framework.API.dll
+C:\Users\Louis\SkyDrive\Development\git\StocksTracker\Core.Framework.API\obj\Release\Core.Framework.API.pdb

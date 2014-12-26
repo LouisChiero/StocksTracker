@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="IIS Web Application Name" description="" value="stockstracker" tags="IisApp">
+    <parameterEntry kind="ProviderPath" scope="IisApp" match="^C:\\Users\\Louis\\SkyDrive\\Development\\git\\StocksTracker\\StocksTracker\.API\\obj\\Release\\Package\\PackageTmp$" />
+    <parameterEntry kind="ProviderPath" scope="setAcl" match="^C:\\Users\\Louis\\SkyDrive\\Development\\git\\StocksTracker\\StocksTracker\.API\\obj\\Release\\Package\\PackageTmp$" />
+  </parameter>
+  <parameter name="Data.Context.StocksTrackerContext-Web.config Connection String" description="" value="Data Source=tcp:zvkfdtz2iz.database.windows.net,1433;Initial Catalog=StocksTracker;User ID=fitzwell@zvkfdtz2iz;Password=L1ttletheG" tags="">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Louis\\SkyDrive\\Development\\git\\StocksTracker\\StocksTracker\.API\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='Data.Context.StocksTrackerContext']/@connectionString" />
+  </parameter>
+</parameters>

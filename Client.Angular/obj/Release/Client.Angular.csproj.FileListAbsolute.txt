@@ -1,0 +1,6 @@
+C:\Users\Louis\SkyDrive\Development\git\StocksTracker\Client.Angular\bin\Client.Angular.dll.config
+C:\Users\Louis\SkyDrive\Development\git\StocksTracker\Client.Angular\bin\Client.Angular.dll
+C:\Users\Louis\SkyDrive\Development\git\StocksTracker\Client.Angular\bin\Client.Angular.pdb
+C:\Users\Louis\SkyDrive\Development\git\StocksTracker\Client.Angular\obj\Release\Client.Angular.csprojResolveAssemblyReference.cache
+C:\Users\Louis\SkyDrive\Development\git\StocksTracker\Client.Angular\obj\Release\Client.Angular.dll
+C:\Users\Louis\SkyDrive\Development\git\StocksTracker\Client.Angular\obj\Release\Client.Angular.pdb

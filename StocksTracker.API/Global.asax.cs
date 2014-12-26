@@ -38,15 +38,30 @@ namespace StocksTracker.API
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
 
             // register stock tracker context as singleton
+            string userId = string.Empty;
+            string password = string.Empty;
+            bool integratedSecurity = true;
+            bool encrypt = false;
             var connectionTimeout = ConfigurationManager.AppSettings["Database.Timeout"];
             int timeout = string.IsNullOrWhiteSpace(connectionTimeout) ? 3600 : Convert.ToInt32(connectionTimeout);
+
+            #if !DEBUG
+            userId = ConfigurationManager.AppSettings["Database.UserId"];
+            password = ConfigurationManager.AppSettings["Database.Password"];
+            integratedSecurity = false;
+            encrypt = true;
+            #endif
+
             var sqlConnectionBuilder = new SqlConnectionStringBuilder
             {
                 DataSource = ConfigurationManager.AppSettings["Database.Server"],
                 InitialCatalog = ConfigurationManager.AppSettings["Database.Name"],
                 MultipleActiveResultSets = true,
-                IntegratedSecurity = true,
-                ConnectTimeout = timeout
+                IntegratedSecurity = integratedSecurity,
+                ConnectTimeout = timeout,
+                UserID = userId,
+                Password = password,
+                Encrypt = encrypt
             };
 
             builder.Register(pcf => new StocksTrackerContextFactory(sqlConnectionBuilder, false))
