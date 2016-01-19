@@ -31,7 +31,7 @@ namespace StocksTracker.API.Services
         public async Task<IEnumerable<Quote>> GetStockQuotes(string[] tickerSymbols)
         {
             var rawQuotes = await GetQuotes(tickerSymbols);
-            return rawQuotes.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
+            return rawQuotes.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries)
                              .Select(rawQuote => new Quote(rawQuote));
         }
 
