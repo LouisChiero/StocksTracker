@@ -39,9 +39,11 @@
             color: '#F58A00'
         };
 
+        console.log("shell");
         activate();
 
         function activate() {
+            console.log("shell.activate");
             common.activateController([
                     logSuccess('Stocks Tracker loaded!', null, true),
                     checkForAuthenticatedUserAndLoadStockTrackers()
@@ -61,56 +63,31 @@
         });
 
         $rootScope.$on('$routeChangeStart', function (event, next, current) {
-
+                console.log("$routeChangeStart");
                 $q.all([
                         toggleSpinner(true),
                         getApplicationUser()
                     ])
                     .then(function () {
 
-                        // check if user is authenticated, and alert listeners
-                        if (applicationUser.authenticated() === true) {
-                            common.eventRaiser(commonConfig.config.userAuthenticationStatusChangedEvent,
-                                { authenticated: true, userName: applicationUser.userName() });
-                        } else {
-                            common.eventRaiser(commonConfig.config.userAuthenticationStatusChangedEvent,
-                                { authenticated: false });
-                            $location.path("#/home");
-                        }
+                        toggleSpinner(false);
+                        confirmUserAuthentication();
                 });
-
-                //toggleSpinner(true);
-
-                //getApplicationUser()
-                //    .then(function () {
-
-                //        // check if user is authenticated, and alert listeners
-                //        if (applicationUser.authenticated() === true) {
-                //            common.eventRaiser(commonConfig.config.userAuthenticationStatusChangedEvent, { authenticated: true, userName: applicationUser.userName() });
-                //        } else {
-                //            common.eventRaiser(commonConfig.config.userAuthenticationStatusChangedEvent, { authenticated: false });
-                //            $location.path("#/home");
-                //        }
-                //});
             }
         );
-       
-        //$rootScope.$on('$routeChangeSuccess', function(event, next, current) {
 
-        //    getApplicationUser()
-        //            .then(function () {
+        $rootScope.$on('$routeChangeSuccess', function(event, next, current) {
+            console.log("$routeChangeSuccess");
+            $q.all([
+                toggleSpinner(true),
+                getApplicationUser()
+            ])
+                .then(function () {
 
-        //                // this indicates a browser refresh, or bookmark url equal to the current location (unlikely, but possible)
-        //                if (current === null || current === undefined) {
-        //                    if (applicationUser.authenticated() === true) {
-        //                        common.eventRaiser(commonConfig.config.userAuthenticationStatusChangedEvent, { authenticated: true, userName: applicationUser.userName() });
-        //                    } else {
-        //                        common.eventRaiser(commonConfig.config.userAuthenticationStatusChangedEvent, { authenticated: false });
-        //                        $location.path("/home");
-        //                    }
-        //                }
-        //            });
-        //});
+                    toggleSpinner(false);
+                    confirmUserAuthentication();
+            });
+        });
 
         function toggleSpinner(on) { vm.isBusy = on; }
 
@@ -169,6 +146,17 @@
 
                     }
                 });
+        }
+
+        function confirmUserAuthentication() {
+            // check if user is authenticated, and alert listeners
+            if (applicationUser.authenticated() === true) {
+                common.eventRaiser(commonConfig.config.userAuthenticationStatusChangedEvent, { authenticated: true, userName: applicationUser.userName() });
+            } else {
+                common.eventRaiser(commonConfig.config.userAuthenticationStatusChangedEvent, { authenticated: false });
+                $location.path("/home");
+            }
+            
         }
     };
 })();
