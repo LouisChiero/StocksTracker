@@ -42,7 +42,7 @@
             if (true) { // TODO: check storage service for auth data
                 authenticated = true;
                 userName = 'Louis Chiero';
-                accessToken = 'GC2_MqiuSryNoUVY7h7I2g_U7IsfeGf9KRKkw45uWs16d5vjieIjB4HGO_YI4mEzBQSbJgGAeHys7L74GaKqTxwvc4qvjJIDFEiGC1V24EcWA8QMWK6cx5P8vupdh4BNppvIjs9CkrOr-RmOTjNLpeidvshXCnd4vxx7D5L6p06pKNdnRUFHm0KhVhU8-oV7wJ3UB3CF6nx529n6GSPPF9j9F2Ga1r-YLSze4QbwuiOwXCY-R75YyZue-ACXq9B9FbUnGF8cftNFC_q2TQnp4F7WKbOk5rz721DoTNrOuRrrFCZ2velRxI-Q1a_gW_4N4tcWHDB1MUiKCdBe5uoC-ZlYUkPhlFuB4KP4B3uw9AT2nGOsaoNs3pAUWMKwH0RhEZU9PRUKa6Y3y8_0XseNFKmKBLI-Z7cBaCP5EO0m6NCh7hJVClz3ejepUBRoo1mAlIqgraAOi6GGsjm8XUm0vzMDbjCnW34MHPhJcPeBqz8DMspOLTrGdWGjaznwWsEOGzp3IqzPteW_k5xpMRy8vg';
+                accessToken = 'n2V1JQYrf5RTFiswsaEIvM7ZHI3f6ZZ2Jismuep2M-KM4tn_goemJOtaCDQCiEIE-rHsYwqi1RB8nyV-uCWExWvpLih0c1zSSk5xE6K9qPr-eKhMR8lX0SdlhDk5Z8hk9I0Szwtq6fIhxJHurLPRrN3y-aT8DteIJcHBmPvghiSbt46nb_-bGYaNNDyHK1KszVSUsl23a_TkMeQpjB1cIcNPdR7q3MRzDYp-pYGkN2Ahevn4gCMMceqgLN-gC-e2sSVcHp1U6g9iXmU6euODgQNu7f3jcuPHr9OpmiOmd49H3nrskz3KsdEjT-bdTgW-GwB4R-ubW5HpvWLaML-9aBGTh0YBoyEVSTdPbDEstl1FO7CI80qmg2sTdZ7SE-2M6AdRUkuHlpXkqOX1_jJxSeeGPI2aIaeMshPsaiznqEgYdALm2uFhYssZ8WosbMJNlXD7R7u9k181YnlorPRLkU-D5XCsWQxrCVx47lf409YAn3pk8wyp2nHRmiWe9gb-lUAHhcEH0xU4eQsNywqt_w';
                 //console.log(applicationUser);
                 //common.eventRaiser(commonConfig.config.userAuthenticationSucceededEvent, { userName: applicationUser.userName() });
             } else {
