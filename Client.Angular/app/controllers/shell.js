@@ -46,57 +46,69 @@
             console.log("shell.activate");
             common.activateController([
                     logSuccess('Stocks Tracker loaded!', null, true),
-                    checkForAuthenticatedUserAndLoadStockTrackers()
+                    getApplicationUser(),
+                    //showLoggedInUser(),
+                    confirmUserAuthentication(),
+                    loadStockTrackers()
                 ], controllerId)
                 // put any post-loading action(s) here
-                .then(function() { console.log("all done"); });
+            .then(function () {
+                $q.when(showLoggedInUser())
+                    .then(function () { confirmUserAuthentication(); })
+                    //.then(function () { confirmUserAuthentication(); })
+                    .then(function () { console.log("shell activated"); });
+            });
         }
 
         $rootScope.$on(config.events.userLoggedOut, function (event, args) {
             common.eventRaiser(commonConfig.config.userAuthenticationStatusChangedEvent,
                 { authenticated: false });
             // go to login page
+            $location.path("/login");
         });
 
         $rootScope.$on(config.events.userLoggedIn, function (event, args) {
-            $q.when(checkForAuthenticatedUserAndLoadStockTrackers());
+            $q.all([
+                getApplicationUser(),
+                confirmUserAuthentication(),
+                showLoggedInUser(),
+                loadStockTrackers()
+            ])
+                .then(function () { confirmUserAuthentication(); });
         });
 
         $rootScope.$on('$routeChangeStart', function (event, next, current) {
-                console.log("$routeChangeStart");
-                $q.all([
-                        toggleSpinner(true),
-                        getApplicationUser()
-                    ])
-                    .then(function () {
-
-                        toggleSpinner(false);
-                        confirmUserAuthentication();
-                });
-            }
-        );
-
-        $rootScope.$on('$routeChangeSuccess', function(event, next, current) {
-            console.log("$routeChangeSuccess");
             $q.all([
                 toggleSpinner(true),
                 getApplicationUser()
             ])
-                .then(function () {
-
-                    toggleSpinner(false);
-                    confirmUserAuthentication();
-            });
+                .then(function () { confirmUserAuthentication(); });
         });
 
-        function toggleSpinner(on) { vm.isBusy = on; }
+        $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
+            $q.all([
+                toggleSpinner(false),
+                getApplicationUser()
+            ])
+                .then(function () { confirmUserAuthentication(); });
+        });
+
+        $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
+            toggleSpinner(false);
+        });
+
+        function toggleSpinner(on) {
+            vm.isBusy = on;
+        }
 
         $rootScope.$on(events.controllerActivateSuccess,
             function (data) { toggleSpinner(false); }
         );
 
         $rootScope.$on(events.spinnerToggle,
-            function (data) { toggleSpinner(data.show); }
+            function (event, args) {
+                toggleSpinner(args.show);
+            }
         );
 
         function getApplicationUser() {
@@ -104,59 +116,44 @@
                 .then(function (data) { applicationUser = data; });
         }
 
-        function checkForAuthenticatedUserAndLoadStockTrackers() {
+        function showLoggedInUser() {
+            return $q.when().then(function() {
+                if (applicationUser.authenticated() === true) {
+                    log("User " + applicationUser.userName() + " logged in.");
+                }
+            });
+        }
 
-            return $q.when(authenticationService.user())
-                .then(function (data) { applicationUser = data; })
-                .then(function () {
+        function loadStockTrackers() {
 
-                    if (applicationUser.authenticated()) {
-                        log("User " + applicationUser.userName() + " logged in.");
+            return $q.when(stockTrackerService.getStockTrackers())
+                .then(function (data) {
+
+                    if (data.length > 0) {
+
+                        log("Loading " + data.length + " stock tracker(s).");
+
+                        angular.forEach(data, function (value, key) {
+                            common.eventRaiser(commonConfig.config.stockTrackerLoadedEvent,
+                            { stockTracker: value });
+                        });
+                        
                     }
-                })
-                .then(function () {
-
-                    if (applicationUser.authenticated()) {
-
-                        var stockTrackers = [];
-                        stockTrackerService.getStockTrackers()
-                            .then(function (data) { stockTrackers = data; })
-                            .then(function() {
-                            
-                                if (stockTrackers.length > 0) {
-                                    
-                                    log("Loading " + stockTrackers.length + " stock tracker(s).");
-
-                                    angular.forEach(stockTrackers, function (value, key) {
-                                        common.eventRaiser(commonConfig.config.stockTrackerLoadedEvent,
-                                            { stockTracker: value });
-                                    });
-                                }
-                            })
-                            .then(function () {
-
-                                common.eventRaiser(commonConfig.config.userAuthenticationStatusChangedEvent,
-                                    { authenticated: true, userName: applicationUser.userName() });
-
-                            });
-                    } else {
-
-                        common.eventRaiser(commonConfig.config.userAuthenticationStatusChangedEvent,
-                                    { authenticated: false });
-
-                    }
-                });
+                    
+            });
         }
 
         function confirmUserAuthentication() {
-            // check if user is authenticated, and alert listeners
-            if (applicationUser.authenticated() === true) {
-                common.eventRaiser(commonConfig.config.userAuthenticationStatusChangedEvent, { authenticated: true, userName: applicationUser.userName() });
-            } else {
-                common.eventRaiser(commonConfig.config.userAuthenticationStatusChangedEvent, { authenticated: false });
-                $location.path("/home");
-            }
-            
+            return $q.when().then(function () {
+
+                // check if user is authenticated, and alert listeners
+                if (applicationUser.authenticated() === true) {
+                    common.eventRaiser(commonConfig.config.userAuthenticationStatusChangedEvent, { authenticated: true, userName: applicationUser.userName() });
+                } else {
+                    common.eventRaiser(commonConfig.config.userAuthenticationStatusChangedEvent, { authenticated: false });
+                }
+
+            });
         }
     };
 })();

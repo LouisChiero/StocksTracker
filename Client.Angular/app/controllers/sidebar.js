@@ -15,6 +15,7 @@
         sidebar]);
 
     function sidebar($rootScope, common, config, $route, $routeParams, $location, addDialog, updateDialog, deleteDialog) {
+        console.log("sidebar");
         // logging
         var log = common.logger.getLogFn(controllerId);
 
@@ -30,6 +31,9 @@
         // only show resources to authenticated user
         $rootScope.$on(config.events.userAuthenticationStatusChanged, function (event, args) {
             vm.showResources = args.authenticated;
+            if (args.authenticated === false) {
+                vm.navRoutes = [];
+            }
         });
 
         // each time a tracker is loaded, add it to the route collection

@@ -1,1 +1,125 @@
-﻿<div data-ng-controller="login as vm">login</div>
+﻿<section class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2" ng-cloak>
+    <form class="form-horizontal"
+          name="loginForm"
+          novalidate
+          data-ng-controller="login as vm"
+          role="form">
+        
+        <fieldset>
+            
+            <legend>Login</legend>
+
+            <div class="form-group"
+                 ng-class="{'has-error': loginForm.userName.$invalid && loginForm.userName.dirty}">
+
+                <label class="col-md-2 control-label" for="userName">
+                    User Name
+                </label>
+                
+                <div class="col-md-4">
+                    <input class="form-control"
+                           id="userName"
+                           name="userName"
+                           type="text"
+                           placeholder="User Name (required)"
+                           autofocus
+                           ng-model="vm.loginData.userName"
+                           required
+                           ng-minlength="2"
+                           ng-maxlength="12" />
+                </div>
+                <span class="help-block has-error">
+                    <span ng-show="loginForm.userName.$error.required">
+                        User Name is required.
+                    </span>
+                    <span ng-show="loginForm.userName.$error.minlength">
+                        User Name must be at least 2 characters in length.
+                    </span>
+                    <span ng-show="loginForm.userName.$error.maxlength">
+                        User Name cannot exceed 12 characters in length.
+                    </span>
+                </span>
+
+            </div>
+            
+            <div class="form-group"
+                 ng-class="{'has-error': loginForm.password.$invalid
+                 && loginForm.password.dirty}">
+
+                <label class="col-md-2 control-label" for="password">
+                    Password
+                </label>
+
+                <div class="col-md-4">
+                    <input class="form-control"
+                           id="password"
+                           name="password"
+                           type="password"
+                           placeholder="Password (required)"
+                           ng-model="vm.loginData.password"
+                           required
+                           ng-minlength="6"
+                           ng-maxlength="20" />
+                </div>
+                <span class="help-block has-error">
+                    <span ng-show="loginForm.password.$error.required">
+                        Password is required.
+                    </span>
+                    <span ng-show="loginForm.password.$error.minlength">
+                        Password must be at least 6 characters in length.
+                    </span>
+                    <span ng-show="loginForm.password.$error.maxlength">
+                        Password cannot exceed 20 characters in length.
+                    </span>
+                </span>
+
+            </div>
+            
+            <div class="form-group">
+                <div class="col-md-4 col-md-offset-2">
+                    <span>
+                        <button class="btn btn-primary"
+                                style="width:80px;margin-right:10px"
+                                ng-click="vm.submit()"
+                                ng-disabled="loginForm.$invalid">
+                            Login
+                        </button>
+                    </span>
+                    <span>
+                        <button class="btn btn-default"
+                                style="width:70px"
+                                ng-click="vm.cancel(loginForm)">
+                            Cancel
+                        </button>
+                    </span>
+                </div>
+            </div>
+            
+            <div class="form-group"
+                 ng-show="vm.message">
+                <div class="col-md-6">
+                    <pre style="font: inherit">{{vm.message }}</pre>
+                </div>
+            </div>
+
+        </fieldset>
+
+        <!--<div class="row">
+            <div class="col-md-2">
+                &nbsp;
+            </div>
+            <div class="col-md-4">
+                <h2 class="form-login-heading">Login</h2>
+                <input type="text" class="form-control" placeholder="Username" data-ng-model="vm.loginData.userName" required autofocus>
+                <input type="password" class="form-control" placeholder="Password" data-ng-model="vm.loginData.password" required>
+                <button class="btn btn-md btn-info btn-block" type="submit" data-ng-click="login()">Login</button>
+                <div data-ng-hide="vm.message == ''" class="alert alert-danger">
+                    {{vm.message}}
+                </div>
+            </div>
+            <div class="col-md-2">
+                &nbsp;
+            </div>
+        </div>-->
+    </form>
+</section>

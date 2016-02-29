@@ -6,7 +6,7 @@
     //  - common
     //  - logger
     //  - spinner
-    angular.module('common', [])
+    angular.module('common', ['ngStorage'])
 
     // Must configure the common service and set its 
     // events via the commonConfigProvider
@@ -25,9 +25,9 @@
     })
 
     .factory('common',
-        ['$q', '$rootScope', '$timeout', 'commonConfig', 'logger', '$window', common]);
+        ['$q', '$rootScope', '$timeout', 'commonConfig', 'logger', '$window', '$localStorage', '$sessionStorage', common]);
 
-    function common($q, $rootScope, $timeout, commonConfig, logger, $window) {
+    function common($q, $rootScope, $timeout, commonConfig, logger, $window, $localStorage, $sessionStorage) {
         var throttles = {};
 
         var service = {
@@ -35,6 +35,8 @@
             $broadcast: $broadcast,
             $q: $q,
             $timeout: $timeout,
+            localStorage: $localStorage,
+            sessionStorage: $sessionStorage,
             // generic
             activateController: activateController,
             createSearchThrottle: createSearchThrottle,
