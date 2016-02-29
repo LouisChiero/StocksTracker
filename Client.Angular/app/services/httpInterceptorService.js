@@ -36,13 +36,13 @@
 
         // here for info only. probably not useful to intercept this call.
         function requestError(httpRejection) {
-            console.log(httpRejection);
+            //console.log(httpRejection);
             return $q.reject(httpRejection);
         }
 
         // here for info only. probably not useful to intercept this call.
         function response(httpResponse) {
-            console.log(httpResponse);
+            //console.log(httpResponse);
             return httpResponse;
         }
 
@@ -50,7 +50,7 @@
 
             var authService = $injector.get('authenticationService');
 
-            if (httpRejection.status === 401) {
+            if (httpRejection.status === 401 || httpRejection.status === 500) {
                 authService.logout();
             }
 

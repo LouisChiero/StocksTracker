@@ -1,7 +1,8 @@
 ﻿(function() {
     'use strict';
+    var controllerId = 'topnav';
 
-    angular.module('stocksTrackerApp').controller('topnav', [
+    angular.module('stocksTrackerApp').controller(controllerId, [
         '$location',
         '$rootScope',
         'stockTrackerService',
@@ -11,7 +12,7 @@
         topnav]);
 
     function topnav($location, $rootScope, stockTrackerService, authenticationService, config, common) {
-
+        
         var vm = this;
         vm.loggedInUserName = null;
         vm.showResources = false;
@@ -20,6 +21,13 @@
         vm.logout = logout;
         vm.login = login;
         vm.register = register;
+
+        activate();
+
+        function activate() {
+            common.activateController([], controllerId)
+                .then(function () { console.log(controllerId + " loaded"); });
+        }
         
         // only show resources to authenticated user
         $rootScope.$on(config.events.userAuthenticationStatusChanged, function (event, args) {

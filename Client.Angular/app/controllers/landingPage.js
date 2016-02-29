@@ -1,17 +1,26 @@
 ﻿(function() {
     'use strict';
+    var controllerId = 'landingpage';
 
-    angular.module('stocksTrackerApp').controller('landingpage', [
+    angular.module('stocksTrackerApp').controller(controllerId, [
+        'common',
         '$rootScope',
         'config',
         landingpage]);
 
-    function landingpage($rootScope, config) {
+    function landingpage(common, $rootScope, config) {
 
         console.log("landingpage.");
 
         var vm = this,
             loginVisible = true;
+
+        activate();
+
+        function activate() {
+            common.activateController([], controllerId)
+                .then(function () { console.log(controllerId + " loaded"); });
+        }
 
         vm.showLogin = function() {
             return loginVisible;

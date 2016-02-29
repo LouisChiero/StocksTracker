@@ -63,7 +63,7 @@
             }, {
                 url: '/register',
                 config: {
-                    title: 'charts',
+                    title: 'register',
                     templateUrl: 'app/views/register.html',
                     reloadOnSearch: false,
                     settings: {
@@ -74,7 +74,7 @@
             }, {
                 url: '/login',
                 config: {
-                    title: 'charts',
+                    title: 'login',
                     templateUrl: 'app/views/login.html',
                     reloadOnSearch: false,
                     settings: {
