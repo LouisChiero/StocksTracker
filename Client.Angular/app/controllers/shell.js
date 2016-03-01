@@ -39,23 +39,20 @@
             color: '#F58A00'
         };
 
-        console.log("shell");
         activate();
 
         function activate() {
-            console.log("shell.activate");
+            
             common.activateController([
                     logSuccess('Stocks Tracker loaded!', null, true),
-                    getApplicationUser(),
-                    //showLoggedInUser(),
+                    getApplicationUser(),                  
                     confirmUserAuthentication(),
                     loadStockTrackers()
                 ], controllerId)
                 // put any post-loading action(s) here
             .then(function () {
                 $q.when(showLoggedInUser())
-                    .then(function () { confirmUserAuthentication(); })
-                    //.then(function () { confirmUserAuthentication(); })
+                    .then(function () { confirmUserAuthentication(); })              
                     .then(function () { console.log("shell activated"); });
             });
         }
@@ -63,6 +60,7 @@
         $rootScope.$on(config.events.userLoggedOut, function (event, args) {
             common.eventRaiser(commonConfig.config.userAuthenticationStatusChangedEvent,
                 { authenticated: false });
+
             // go to login page
             $location.path("/login");
         });
@@ -74,7 +72,7 @@
                 showLoggedInUser(),
                 loadStockTrackers()
             ])
-                .then(function () { confirmUserAuthentication(); });
+              .then(function () { confirmUserAuthentication(); });
         });
 
         $rootScope.$on('$routeChangeStart', function (event, next, current) {
@@ -82,7 +80,7 @@
                 toggleSpinner(true),
                 getApplicationUser()
             ])
-                .then(function () { confirmUserAuthentication(); });
+              .then(function () { confirmUserAuthentication(); });
         });
 
         $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
@@ -90,26 +88,51 @@
                 toggleSpinner(false),
                 getApplicationUser()
             ])
-                .then(function () { confirmUserAuthentication(); });
+              .then(function () { confirmUserAuthentication(); });
         });
 
         $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
             toggleSpinner(false);
-        });
-
-        function toggleSpinner(on) {
-            vm.isBusy = on;
-        }
+        });        
 
         $rootScope.$on(events.controllerActivateSuccess,
             function (data) { toggleSpinner(false); }
         );
 
-        $rootScope.$on(events.spinnerToggle,
+        $rootScope.$on(events.userLoginStarted,
+            function (event) { toggleSpinner(true); }
+        );
+
+        $rootScope.$on(events.userLoginCompleted, function (event, args) {
+            toggleSpinner(false);
+            if (args.success === true) {
+              $location.path('/home');
+            }
+          }
+        );
+
+        $rootScope.$on(events.userRegistrationStarted,
+            function (event) { toggleSpinner(true); }
+        );
+
+        $rootScope.$on(events.userRegistrationCompleted,
             function (event, args) {
-                toggleSpinner(args.show);
+              toggleSpinner(false);
+              if (args && args.success === true) {
+                  $location.path('/login');
+              }
             }
         );
+
+        function toggleSpinner(on) {
+          vm.isBusy = on;
+        }
+
+        //$rootScope.$on(events.spinnerToggle,
+        //    function (event, args) {
+        //        toggleSpinner(args.show);
+        //    }
+        //);
 
         function getApplicationUser() {
             return $q.when(authenticationService.user())

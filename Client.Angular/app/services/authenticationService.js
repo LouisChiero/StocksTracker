@@ -64,11 +64,16 @@
         function register(registration) {
 
             // clear auth
-            revokeAuthorization();
+            revokeAuthorization();          
 
             var url = ngStocksTrackerApiSettings.apiServiceBaseUri + "/" + ngStocksTrackerApiSettings.accountApiPrefix + "/Register";
-            return $http.post(url, { UserName: registration.userName, Password: registration.password })
-                .then(function(response) { return response; });
+            var deferred = common.$q.defer();
+
+            return $http.post(url, { UserName: registration.userName, Password: registration.password, ConfirmPassword: registration.confirmPassword })
+                .success(function (response) { deferred.resolve(response); })
+                .error(function (err, status) { deferred.reject(err); });
+
+            return deferred.promise;
         }
 
         function login(loginData) {

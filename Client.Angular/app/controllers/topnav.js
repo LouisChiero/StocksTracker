@@ -18,9 +18,7 @@
         vm.showResources = false;
         vm.searchStocks = searchStocks;
         vm.done = done;
-        vm.logout = logout;
-        vm.login = login;
-        vm.register = register;
+        vm.logout = logout;      
 
         activate();
 
@@ -48,14 +46,6 @@
 
         function logout() {
             authenticationService.logout();
-        }
-
-        function login() {
-           
-        }
-
-        function register() {
-         
-        }
+        }        
     };
 })();

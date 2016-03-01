@@ -87,26 +87,28 @@ namespace StocksTracker.API
 
         private static void ConfigureDatabase()
         {
+          try
+          {
             using (var ctx = StocksTrackerContextFactory.GetObject())
             {
-                try
+              try
+              {
+                if (!ctx.Database.Exists())
                 {
-                    if (!ctx.Database.Exists())
-                    {
-                        Trace.WriteLine("StocksTracker database does not exist. Creating.");
-                        ctx.Database.Create();
-                    }
+                  Trace.WriteLine("StocksTracker database does not exist. Creating.");
+                  ctx.Database.Create();
+                }
 
-                    Trace.WriteLine("Creating user roles.");
-                    if (!UserAdministration.RoleExists("Admin"))
-                        UserAdministration.CreateRole("Admin");
-                    if (!UserAdministration.RoleExists("User"))
-                        UserAdministration.CreateRole("User");
+                Trace.WriteLine("Creating user roles.");
+                if (!UserAdministration.RoleExists("Admin"))
+                  UserAdministration.CreateRole("Admin");
+                if (!UserAdministration.RoleExists("User"))
+                  UserAdministration.CreateRole("User");
 
-                    if (ctx.Stocks.Any() == false)
-                    {
-                        Trace.WriteLine("Creating stocks.");
-                        var amex = new[]
+                if (ctx.Stocks.Any() == false)
+                {
+                  Trace.WriteLine("Creating stocks.");
+                  var amex = new[]
                             {
                                 #region amex securities
                                 new Stock{TickerSymbol="FAX", Name="Aberdeen Asia-Pacific Income Fund Inc"},
@@ -576,7 +578,7 @@ namespace StocksTracker.API
                     #endregion
                             };
 
-                        var nasdaq = new[]
+                  var nasdaq = new[]
                             {
                                 #region nasdaq securities
                                 new Stock{TickerSymbol="FLWS", Name="1-800 FLOWERS.COM, Inc."},
@@ -3259,7 +3261,7 @@ namespace StocksTracker.API
                                     #endregion
                             };
 
-                        var nyse = new[]
+                  var nyse = new[]
                             {
                                 #region nyse securities
                                 new Stock{TickerSymbol="DDD", Name="3D Systems Corporation"},
@@ -6533,66 +6535,66 @@ namespace StocksTracker.API
                     #endregion
                             };
 
-                        ctx.Stocks.AddOrUpdate(s => new { s.TickerSymbol, s.Name }, amex);
-                        ctx.Stocks.AddOrUpdate(s => new { s.TickerSymbol, s.Name }, nasdaq);
-                        ctx.Stocks.AddOrUpdate(s => new { s.TickerSymbol, s.Name }, nyse);
-                    }
-
-                    ctx.SaveChanges();
-
-                    Trace.WriteLine("Querying StocksTracker database...");
-                    var allStocks = ctx.Stocks.ToList();
-                    foreach (var stock in allStocks)
-                        Trace.WriteLine(string.Format("Found stock {0}...", stock.TickerSymbol));
-                }
-                catch (Exception ex)
-                {
-                    Trace.WriteLine("Exception creating/updating database: {0}", ex.Message);
+                  ctx.Stocks.AddOrUpdate(s => new { s.TickerSymbol, s.Name }, amex);
+                  ctx.Stocks.AddOrUpdate(s => new { s.TickerSymbol, s.Name }, nasdaq);
+                  ctx.Stocks.AddOrUpdate(s => new { s.TickerSymbol, s.Name }, nyse);
                 }
 
-                Trace.WriteLine("Finished.");
+                ctx.SaveChanges();
+
+                Trace.WriteLine("Querying StocksTracker database...");
+                var allStocks = ctx.Stocks.ToList();
+                foreach (var stock in allStocks)
+                  Trace.WriteLine(string.Format("Found stock {0}...", stock.TickerSymbol));
+              }
+              catch (Exception ex)
+              {
+                Trace.WriteLine("Exception creating/updating database: {0}", ex.Message);
+              }
+
+              Trace.WriteLine("Finished.");
 
 
-                var adminUser = UserAdministration.FindByUserName("LouisChiero");
-                if (adminUser == null)
-                {
-                    var adminResult = UserAdministration.CreateUser(
-                        new User
-                        {
-                            FirstName = "Louis",
-                            LastName = "Chiero",
-                            Identity = new IdentityUser { Email = "fitzwell@comcast.net", UserName = "LouisChiero" }
-                        }, "fitzwell");
-
-                    if (!adminResult.Succeeded)
-                        throw new Exception();
-
-                    adminUser = UserAdministration.FindByUserName("LouisChiero");
-                    UserAdministration.AddRoleToUser(adminUser.Identity.Id, "Admin");
-                }
-
-                // reference to seed user
-                var user = ctx.Users.Single(au => au.UserName == "LouisChiero");
-
-                if (ctx.StockTrackers.SingleOrDefault(st => st.Name == "Tech Stocks") == null)
-                {
-                    ctx.StockTrackers.Add(new StockTracker
+              var adminUser = UserAdministration.FindByUserName("LouisChiero");
+              if (adminUser == null)
+              {
+                var adminResult = UserAdministration.CreateUser(
+                    new User
                     {
-                        ApplicationUserId = user.Id,
-                        IsDefault = true,
-                        Name = "Tech Stocks",
-                        ApplicationUser = user
-                    });
+                      FirstName = "Louis",
+                      LastName = "Chiero",
+                      Identity = new IdentityUser { Email = "fitzwell@comcast.net", UserName = "LouisChiero" }
+                    }, "fitzwell");
 
-                    ctx.SaveChanges();
-                }
+                if (!adminResult.Succeeded)
+                  throw new Exception();
 
-                // reference to seed stock tracker
-                var stockTracker = ctx.StockTrackers.Single(st => st.Name == "Tech Stocks");
+                adminUser = UserAdministration.FindByUserName("LouisChiero");
+                UserAdministration.AddRoleToUser(adminUser.Identity.Id, "Admin");
+              }
 
-                // stocks to add to Tech Stocks tracker
-                var stocks = ctx.Stocks.ToList();
-                var addStocks = new List<int>
+              // reference to seed user
+              var user = ctx.Users.Single(au => au.UserName == "LouisChiero");
+
+              if (ctx.StockTrackers.SingleOrDefault(st => st.Name == "Tech Stocks") == null)
+              {
+                ctx.StockTrackers.Add(new StockTracker
+                {
+                  ApplicationUserId = user.Id,
+                  IsDefault = true,
+                  Name = "Tech Stocks",
+                  ApplicationUser = user
+                });
+
+                ctx.SaveChanges();
+              }
+
+              // reference to seed stock tracker
+              var stockTracker = ctx.StockTrackers.Single(st => st.Name == "Tech Stocks");
+
+              // stocks to add to Tech Stocks tracker
+              var stocks = ctx.Stocks.ToList();
+              var addStocks = new List<int>
                 {
                     stocks.Single(s => s.TickerSymbol == "MSFT").StockId,
                     stocks.Single(s => s.TickerSymbol == "AAPL").StockId,
@@ -6605,21 +6607,27 @@ namespace StocksTracker.API
                     stocks.Single(s => s.TickerSymbol == "AMZN").StockId
                 };
 
-                foreach (var stockId in addStocks)
+              foreach (var stockId in addStocks)
+              {
+                if (!ctx.StockTrackerStocks.Any(
+                        sts => sts.StockId == stockId && sts.StockTrackerId == stockTracker.StockTrackerId))
                 {
-                    if (!ctx.StockTrackerStocks.Any(
-                            sts => sts.StockId == stockId && sts.StockTrackerId == stockTracker.StockTrackerId))
-                    {
-                        ctx.StockTrackerStocks.Add(new StockTrackerStock
-                        {
-                            StockId = stockId,
-                            StockTrackerId = stockTracker.StockTrackerId
-                        });
-                    }
+                  ctx.StockTrackerStocks.Add(new StockTrackerStock
+                  {
+                    StockId = stockId,
+                    StockTrackerId = stockTracker.StockTrackerId
+                  });
                 }
+              }
 
-                ctx.SaveChanges();
+              ctx.SaveChanges();
             }
+
+          }
+          catch(Exception e)
+          {
+            e.ToString();
+          }            
         }
 
         private static void LoadCaches()
