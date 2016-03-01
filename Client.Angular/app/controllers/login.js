@@ -17,10 +17,8 @@
             password: ""
         };
 
-        vm.message = "";
-        
+        vm.message = "";        
         vm.submit = userLogin;
-
         vm.cancel = function (loginForm) {
             loginForm.$setPristine();
             vm.loginData = { userName: "", password: "" };
@@ -35,24 +33,22 @@
         }
 
         function userLogin() {
-            // TODO: this is not the correct event to raise here. s/b loginBegunEvent
-            common.eventRaiser(commonConfig.config.spinnerToggleEvent, { show: true });
+            
+            var success = false;
+            common.eventRaiser(commonConfig.config.userLoginStartedEvent);
 
             authenticationService.login(vm.loginData)
                 .then(function (response) {
-
-                    // TODO: is it possible to capture the route & redirect?
-                    $location.path('/home');
-            },
-             function (err) {
-
-                 vm.message = err.error_description;
-
-             })
+                  // success
+                  success = true;
+                }
+                , function (err) {
+                  // error
+                  vm.message = err.error_description;
+                })
             .finally(function () {
-                common.eventRaiser(commonConfig.config.spinnerToggleEvent, { show: false });
-            });
-            
+                common.eventRaiser(commonConfig.config.userLoginCompletedEvent, { success: success });
+            });            
         }
     }
 })();

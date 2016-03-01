@@ -15,7 +15,11 @@
         stockRemoved: 'stock.removed',
         userAuthenticationStatusChanged: 'user.authenticationchanged',
         userLoggedOut: 'user.loggedout',
-        userLoggedIn: 'user.loggedin'
+        userLoggedIn: 'user.loggedin',
+        userLoginStarted: 'user.loginStarted',
+        userLoginCompleted: 'user.loginCompleted',
+        userRegistrationStarted: 'user.registrationStarted',
+        userRegistrationCompleted: 'user.registrationCompleted'
     };
 
     var config = {
@@ -47,6 +51,10 @@
         cfg.config.userAuthenticationStatusChangedEvent = config.events.userAuthenticationStatusChanged;
         cfg.config.userLoggedOutEvent = config.events.userLoggedOut;
         cfg.config.userLoggedInEvent = config.events.userLoggedIn;
+        cfg.config.userLoginStartedEvent = config.events.userLoginStarted;
+        cfg.config.userLoginCompletedEvent = config.events.userLoginCompleted;
+        cfg.config.userRegistrationStartedEvent = config.events.userRegistrationStarted;
+        cfg.config.userRegistrationCompletedEvent = config.events.userRegistrationCompleted;
     }])
     //#endregion
 

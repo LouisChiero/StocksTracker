@@ -17,8 +17,7 @@
                     if (scope.spinner) {
                         scope.spinner.stop();
                     }
-                    console.log("spinner options");
-                    console.log(options);
+                
                     scope.spinner = new $window.Spinner(options);
                     scope.spinner.spin(element[0]);
                 }, true);
