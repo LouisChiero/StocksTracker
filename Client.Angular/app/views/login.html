@@ -79,6 +79,7 @@
                 <div class="col-md-4 col-md-offset-2">
                     <span>
                         <button class="btn btn-primary"
+                                type="submit"
                                 style="width:80px;margin-right:10px"
                                 ng-click="vm.submit()"
                                 ng-disabled="loginForm.$invalid">
@@ -87,6 +88,7 @@
                     </span>
                     <span>
                         <button class="btn btn-default"
+                                type="reset"
                                 style="width:70px"
                                 ng-click="vm.cancel(loginForm)">
                             Cancel
@@ -103,6 +105,75 @@
             </div>
 
         </fieldset>
+
+      <fieldset>
+        <legend>Social Login</legend>
+
+        <div class="form-group">
+            <div class="col-md-4">
+                <span>
+                  <button class="btn btn-lg btn-social btn-google" disabled>
+                      <i class="fa fa-google-plus"></i>Login with Google!
+                  </button>
+                </span>        
+            </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-4">
+            <span>
+              <button class="btn btn-lg btn-social btn-github" disabled>
+                <i class="fa fa-github"></i>Login with GitHub!
+              </button>
+            </span>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-4">
+            <span>
+              <button class="btn btn-lg btn-social btn-facebook" disabled>
+                <i class="fa fa-facebook"></i>Login with Facebook!
+              </button>
+            </span>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-4">
+            <span>
+              <button class="btn btn-lg btn-social btn-linkedin" disabled>
+                <i class="fa fa-linkedin"></i>Login with LinkedIn!
+              </button>
+            </span>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-4">
+            <span>
+              <button class="btn btn-lg btn-social btn-microsoft" disabled>
+                <i class="fa fa-windows"></i>Login with Microsoft!
+              </button>
+            </span>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-4">
+            <span>
+              <button class="btn btn-lg btn-social btn-twitter" disabled>
+                <i class="fa fa-twitter"></i>Login with Twitter!
+              </button>
+            </span>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-md-4">
+            <span>
+              <button class="btn btn-lg btn-social btn-yahoo" disabled>
+                <i class="fa fa-yahoo"></i>Login with Yahoo!
+              </button>
+            </span>
+          </div>
+        </div>
+
+      </fieldset>
 
         <!--<div class="row">
             <div class="col-md-2">
