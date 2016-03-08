@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using Autofac;
@@ -16,6 +17,7 @@ using Data.Context;
 using Data.Context.Support;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.OAuth;
+using Owin.Security.Providers.GitHub;
 using StocksTracker.API.Authorization;
 using StocksTracker.API.Cache;
 using StocksTracker.API.Services;
@@ -98,6 +100,22 @@ namespace StocksTracker.API
                 Provider = _container.Resolve<IOAuthAuthorizationServerProvider>()
             })
             .As<OAuthAuthorizationServerOptions>()
+            .SingleInstance();
+
+            builder.Register(context => new GitHubAuthenticationOptions
+            {
+                ClientId = ConfigurationManager.AppSettings["GitHubClientId"],
+                ClientSecret = ConfigurationManager.AppSettings["GitHubClientSecret"],
+                Provider = new GitHubAuthenticationProvider
+                {
+                    OnAuthenticated = authenticatedContext =>
+                    {
+                        authenticatedContext.ToString();
+                        return Task.FromResult(authenticatedContext);
+                    }
+                }
+            })
+            .As<GitHubAuthenticationOptions>()
             .SingleInstance();
 
             // build container, and set dependency resolver

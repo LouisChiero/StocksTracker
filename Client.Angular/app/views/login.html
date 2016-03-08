@@ -108,8 +108,8 @@
 
       <fieldset>
         <legend>Social Login</legend>
-
-        <div class="form-group">
+       
+          <div class="form-group">
             <div class="col-md-4">
                 <span>
                   <button class="btn btn-lg btn-social btn-google" disabled>
@@ -121,7 +121,7 @@
         <div class="form-group">
           <div class="col-md-4">
             <span>
-              <button class="btn btn-lg btn-social btn-github" disabled>
+              <button class="btn btn-lg btn-social btn-github" ng-click="vm.externalLogin('GitHub')">
                 <i class="fa fa-github"></i>Login with GitHub!
               </button>
             </span>

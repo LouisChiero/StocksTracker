@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.AspNet.Identity;
@@ -46,6 +47,16 @@ namespace StocksTracker.API.Controllers
             return Ok();
         }
 
+        // GET: api/Account/ExternalLogin/?provider=Google
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("ExternalLogin")]
+        public async Task<IHttpActionResult> ExternalLogin(string provider)//, string returnUrl)
+        {
+            // Request a redirect to the external login provider
+            return await Task.Run(() => new ChallengeResult(provider, this));//Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl }));
+        }
+
         private IAuthenticationManager Authentication
         {
             get { return Request.GetOwinContext().Authentication; }
@@ -78,6 +89,30 @@ namespace StocksTracker.API.Controllers
             }
 
             return null;
+        }
+
+        private class ChallengeResult : IHttpActionResult
+        {
+            public ChallengeResult(string loginProvider, ApiController controller)
+            {
+                LoginProvider = loginProvider;
+                Request = controller.Request;
+            }
+
+            public Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
+            {
+                Request.GetOwinContext().Authentication.Challenge(LoginProvider);
+
+                var response = new HttpResponseMessage(HttpStatusCode.Unauthorized)
+                {
+                    RequestMessage = Request
+                };
+
+                return Task.FromResult(response);
+            }
+
+            private string LoginProvider { get; set; }
+            private HttpRequestMessage Request { get; set; }
         }
     }
 }
