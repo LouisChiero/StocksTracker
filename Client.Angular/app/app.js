@@ -14,8 +14,8 @@
         'ui.bootstrap'      // ui-bootstrap (ex: carousel, pagination, dialog)
     ])
     .constant('ngStocksTrackerApiSettings', {
-        apiTokenUri: 'http://localhost:15171/Token',
-        apiServiceBaseUri: 'http://localhost:15171/api',
+        apiTokenUri: 'https://stockstracker.azurewebsites.net/Token',
+        apiServiceBaseUri: 'https://stockstracker.azurewebsites.net/api',
         accountApiPrefix: 'Account',
         stocksApiPrefix: 'Stocks',
         stockTrackersApiPrefix: 'StockTrackers',
