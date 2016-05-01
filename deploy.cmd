@@ -1,4 +1,5 @@
 @echo off
+echo %DEPLOY_PROJ%
 
 IF "%DEPLOY_PROJ%" == "Angular" (
 	deploy.Angular.cmd
