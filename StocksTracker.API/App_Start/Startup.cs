@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using Autofac;
 using Core.Framework.API.Data;
@@ -12,9 +13,11 @@ using Data.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Cors;
+using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
+using Owin.Security.Providers.GitHub;
 using StocksTracker.API.UserAdministration;
 
 namespace StocksTracker.API
@@ -28,6 +31,7 @@ namespace StocksTracker.API
         {
             var iocContainer = (IContainer)HttpContext.Current.Items[WebApiApplication.ContainerIdentifier];
             OAuthOptions = iocContainer.Resolve<OAuthAuthorizationServerOptions>();
+            GitHubOAuthOptions = iocContainer.Resolve<GitHubAuthenticationOptions>();
             StocksTrackerContextFactory = iocContainer.Resolve<IObjectFactory<StocksTrackerContext>>();
             UserAdministration = iocContainer.Resolve<IUserAdministration>();
             StocksCacheManager = iocContainer.Resolve<ICacheManager>();
@@ -37,6 +41,8 @@ namespace StocksTracker.API
         /// Gets the open authorization options for the server.
         /// </summary>
         private static OAuthAuthorizationServerOptions OAuthOptions { get; set; }
+
+        private static GitHubAuthenticationOptions GitHubOAuthOptions { get; set; }
 
         /// <summary>
         /// Gets a reference to a factory for creating stocks tracker contexts.
@@ -82,7 +88,8 @@ namespace StocksTracker.API
             //    appId: "",
             //    appSecret: "");
 
-            app.UseGoogleAuthentication();
+            app.UseGoogleAuthentication("google", "google");
+            app.UseGitHubAuthentication(GitHubOAuthOptions);
         }
 
         private static void ConfigureDatabase()

@@ -72,8 +72,6 @@
             return $http.post(url, { UserName: registration.userName, Password: registration.password, ConfirmPassword: registration.confirmPassword })
                 .success(function (response) { deferred.resolve(response); })
                 .error(function (err, status) { deferred.reject(err); });
-
-            return deferred.promise;
         }
 
         function login(loginData) {

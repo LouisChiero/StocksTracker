@@ -7,9 +7,11 @@
         'commonConfig',
         'authenticationService',
         '$location',
+        '$http',
+        'ngStocksTrackerApiSettings',
         login]);
 
-    function login(common, commonConfig, authenticationService, $location) {
+    function login(common, commonConfig, authenticationService, $location, $http, ngStocksTrackerApiSettings) {
         
         var vm = this;
         vm.loginData = {
@@ -24,6 +26,8 @@
             vm.loginData = { userName: "", password: "" };
             vm.message = "";
         };
+
+        vm.externalLogin = externalLogin;
 
         activate();
 
@@ -49,6 +53,16 @@
             .finally(function () {
                 common.eventRaiser(commonConfig.config.userLoginCompletedEvent, { success: success });
             });            
+        }
+
+        function externalLogin(provider) {
+            console.log(provider);
+            var url = ngStocksTrackerApiSettings.apiServiceBaseUri + "/" + ngStocksTrackerApiSettings.accountApiPrefix + "/ExternalLogin/";
+      
+            //$http({ method: 'POST', url: url, headers: { 'Content-Type': "application/x-www-form-urlencoded" }, params: { 'provider': provider }, responseType: 'json' })
+            //    .then(function (data) { return data.data; });
+
+            window.open(url + "?provider=" + provider, "Authenticate Account", "location=0,status=0,width=750,height=750");
         }
     }
 })();
