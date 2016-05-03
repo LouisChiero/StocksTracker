@@ -62,7 +62,7 @@
             //$http({ method: 'POST', url: url, headers: { 'Content-Type': "application/x-www-form-urlencoded" }, params: { 'provider': provider }, responseType: 'json' })
             //    .then(function (data) { return data.data; });
 
-            window.open(url + "?provider=" + provider, "Authenticate Account", "location=0,status=0,width=600,height=750");
+            window.open(url + "?provider=" + provider, "Authenticate Account", "location=0,status=0,width=750,height=750");
         }
     }
 })();
