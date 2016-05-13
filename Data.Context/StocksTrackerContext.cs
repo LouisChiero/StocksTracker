@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Linq;
 using System.Threading.Tasks;
 using Data.Context.Configuration;
 using Data.Models;
@@ -83,12 +84,19 @@ namespace Data.Context
         public new int SaveChanges()
         {
             return base.SaveChanges();
-        }
+        }        
 
         /// <see cref="IStocksTrackerContext.SaveChangesAsync"/>
         public new Task<int> SaveChangesAsync()
         {
             return base.SaveChangesAsync();
+        }
+
+        /// <see cref="IStocksTrackerContext.Ping"/>
+        public void Ping()
+        {
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            Stocks.Any();
         }
 
         /// <see cref="DbContext.OnModelCreating"/>
