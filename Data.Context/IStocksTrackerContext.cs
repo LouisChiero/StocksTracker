@@ -47,5 +47,10 @@ namespace Data.Context
         /// </summary>
         /// <returns>The number of objects affected by the save.</returns>
         Task<int> SaveChangesAsync();
+        
+        /// <summary>
+        /// Method will let a caller know if the context is configured correctly, and active.
+        /// </summary>
+        void Ping();
     }
 }
