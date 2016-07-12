@@ -20,7 +20,7 @@ namespace StocksTracker.API.Services
     {
         private readonly IStockQuoteService _stockQuoteService;
         private readonly IObjectFactory<StocksTrackerContext> _stocksTrackerContextFactory;
-        private readonly ICache<StockRecord> _stockCache;
+        private readonly ICacheManager<StockRecord> _cacheManager;
 
         static readonly object LockObject = new object();
 
@@ -29,15 +29,15 @@ namespace StocksTracker.API.Services
         /// </summary>
         /// <param name="stockQuoteService">Reference to an object that provides stock quotes.</param>
         /// <param name="stocksTrackerContextFactory">Reference to a factory that provides <see cref="StocksTrackerContext"/> objects.</param>
-        /// <param name="stockCache">Reference to the stock cache object.</param>
+        /// <param name="cacheManager">Reference to the stock cache object.</param>
         public StockUpdater(
             IStockQuoteService stockQuoteService,
             IObjectFactory<StocksTrackerContext> stocksTrackerContextFactory,
-            ICache<StockRecord> stockCache)
+            ICacheManager<StockRecord> cacheManager)
         {
             _stockQuoteService = stockQuoteService;
             _stocksTrackerContextFactory = stocksTrackerContextFactory;
-            _stockCache = stockCache;
+            _cacheManager = cacheManager;
         }
 
         /// <see cref="IStockUpdater.UpdateStocksQuoteDataAsync"/>
@@ -59,7 +59,7 @@ namespace StocksTracker.API.Services
                         var updateStock = ctx.Stocks.Find(stock.StockRecordId);
                         UpdateStockFromQuote(updateStock, quotes.First(q => q.Ticker == updateStock.TickerSymbol));
                         ctx.SaveChanges();
-                        _stockCache.UpdateCachedObject(updateStock.MapStockRecord());
+                        _cacheManager.UpdateCachedObject(updateStock.MapStockRecord());
                     }
                 }
             }

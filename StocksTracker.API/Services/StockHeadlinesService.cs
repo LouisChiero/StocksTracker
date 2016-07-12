@@ -17,22 +17,22 @@ namespace StocksTracker.API.Services
     /// </summary>
     public class StockHeadlinesService : IStockHeadlinesService
     {
-        private readonly ICache<StockRecord> _stockCache;
+        private readonly ICacheManager<StockRecord> _cacheManager;
         private const string HeadlinesBaseUrl = "http://finance.yahoo.com/rss/headline?s=";
 
         /// <summary>
         /// Instantiates the StockHeadlinesService class.
         /// </summary>
-        /// <param name="stockCache">Reference to the stock cache object.</param>
-        public StockHeadlinesService(ICache<StockRecord> stockCache)
+        /// <param name="cacheManager">Reference to the stock cache object.</param>
+        public StockHeadlinesService(ICacheManager<StockRecord> cacheManager)
         {
-            _stockCache = stockCache;
+            _cacheManager = cacheManager;
         }
 
         /// <see cref="IStockHeadlinesService.GetStockHeadlinesAsync(int)"/>
         public async Task<Headlines> GetStockHeadlinesAsync(int stockId)
         {
-            var stock = _stockCache.GetById(stockId);
+            var stock = _cacheManager.GetCachedObject(stockId);
             if (stock == null)
                 throw new ObjectNotFoundException();
 
@@ -47,7 +47,7 @@ namespace StocksTracker.API.Services
         /// <see cref="IStockHeadlinesService.GetStockHeadlinesAsync(string)"/>
         public async Task<Headlines> GetStockHeadlinesAsync(string tickerSymbol)
         {
-            var allStocks = await Task.Run(() => _stockCache.GetAll());
+            var allStocks = await Task.Run(() => _cacheManager.GetAllCachedObjects());
             var theStock =
                 allStocks.SingleOrDefault(
                     record =>

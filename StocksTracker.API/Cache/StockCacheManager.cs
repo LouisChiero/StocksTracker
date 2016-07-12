@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using Core.Framework.API.Data;
 using Core.Framework.API.Stocks;
@@ -11,7 +12,7 @@ namespace StocksTracker.API.Cache
     /// <summary>
     /// Class that manages the stock cache.
     /// </summary>
-    public class StockCacheManager : ICacheManager
+    public class StockCacheManager : ICacheManager<StockRecord>
     {
         private readonly IObjectFactory<StocksTrackerContext> _stocksTrackerContextFactory;
         private readonly ICache<StockRecord> _stockCache;
@@ -31,8 +32,8 @@ namespace StocksTracker.API.Cache
             _stockCache = stockCache;
         }
 
-        /// <see cref="ICacheManager.LoadDataCache"/>
-        public void LoadDataCache()
+        /// <see cref="ICacheManager{T}.InitializeCache"/>
+        public void InitializeCache()
         {
             lock (LockObject)
             {
@@ -44,6 +45,45 @@ namespace StocksTracker.API.Cache
                         _stockCache.AddToCache(stock.MapStockRecord());
                 }
             }
+        }
+
+        /// <see cref="ICacheManager{T}.AddObjectToCache"/>
+        public void AddObjectToCache(StockRecord cacheObject)
+        {
+            lock (LockObject)
+                _stockCache.AddToCache(cacheObject);
+        }
+
+        /// <see cref="ICacheManager{T}.GetCachedObject"/>
+        public StockRecord GetCachedObject(int id)
+        {
+            return _stockCache.GetById(id);
+        }
+
+        /// <see cref="ICacheManager{T}.GetAllCachedObjects"/>
+        public IEnumerable<StockRecord> GetAllCachedObjects()
+        {
+            return _stockCache.GetAll();
+        }
+
+        /// <see cref="ICacheManager{T}.UpdateCachedObject"/>
+        public void UpdateCachedObject(StockRecord cachedObject)
+        {
+            lock (LockObject)
+                _stockCache.UpdateCachedObject(cachedObject);
+        }
+
+        /// <see cref="ICacheManager{T}.ClearCachedObjects"/>
+        public void ClearCachedObjects()
+        {
+            lock (LockObject)
+                _stockCache.Clear();
+        }
+
+        /// <see cref="ICacheManager{T}.ObjectExistsInCache"/>
+        public bool ObjectExistsInCache(int id)
+        {
+            return _stockCache.GetById(id) != null;
         }
     }
 }

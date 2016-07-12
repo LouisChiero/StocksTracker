@@ -13,29 +13,29 @@ namespace StocksTracker.API.Services
     /// </summary>
     public class StocksService : IStocks
     {
-        private readonly ICache<StockRecord> _stockCache;
+        private readonly ICacheManager<StockRecord> _cacheManager;
         private readonly IStockUpdater _stockUpdater;
 
         /// <summary>
         /// Instantiates the StocksService class.
         /// </summary>
-        /// <param name="stockCache">Reference to the stock cache object.</param>
+        /// <param name="cacheManager">Reference to the stock cache object.</param>
         /// <param name="stockUpdater">Reference to the stock updater object.</param>
         public StocksService(
-            ICache<StockRecord> stockCache,
+            ICacheManager<StockRecord> cacheManager,
             IStockUpdater stockUpdater)
         {
-            _stockCache = stockCache;
+            _cacheManager = cacheManager;
             _stockUpdater = stockUpdater;
         }
 
         /// <see cref="IStocks.GetStockAsync(int)"/>
         public async Task<StockRecord> GetStockAsync(int stockId)
         {
-            var stock = await Task.Run(() => _stockCache.GetById(stockId));
+            var stock = await Task.Run(() => _cacheManager.GetCachedObject(stockId));
             await _stockUpdater.UpdateStocksQuoteDataAsync(stock.ToEnumerable());
 
-            return await Task.Run(() => _stockCache.GetById(stockId));
+            return await Task.Run(() => _cacheManager.GetCachedObject(stockId));
         }
 
         /// <see cref="IStocks.GetStockAsync(string)"/>
@@ -44,7 +44,7 @@ namespace StocksTracker.API.Services
             if (string.IsNullOrWhiteSpace(tickerSymbol))
                 return null;
 
-            var allStocks = await Task.Run(() => _stockCache.GetAll());
+            var allStocks = await Task.Run(() => _cacheManager.GetAllCachedObjects());
             var theStock =
                 allStocks.SingleOrDefault(
                     record =>
@@ -54,13 +54,13 @@ namespace StocksTracker.API.Services
                 return null;
 
             await _stockUpdater.UpdateStocksQuoteDataAsync(theStock.ToEnumerable());
-            return await Task.Run(() => _stockCache.GetById(theStock.StockRecordId));
+            return await Task.Run(() => _cacheManager.GetCachedObject(theStock.StockRecordId));
         }
 
         /// <see cref="IStocks.GetStocksAsync"/>
         public async Task<IEnumerable<StockRecord>> GetStocksAsync()
         {
-            return await Task.Run(() => _stockCache.GetAll());
+            return await Task.Run(() => _cacheManager.GetAllCachedObjects());
         }
 
         /// <see cref="IStocks.GetStocksAsync"/>
@@ -72,7 +72,7 @@ namespace StocksTracker.API.Services
             // use lower case for comparison(s)
             term = term.ToLowerInvariant();
 
-            var getAll = await Task.Run(() => _stockCache.GetAll());
+            var getAll = await Task.Run(() => _cacheManager.GetAllCachedObjects());
             var allStocks = getAll.ToList();
 
             // give preference to ticker matches

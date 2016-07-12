@@ -73,7 +73,7 @@ namespace StocksTracker.API
             // register core business interfaces
             builder.RegisterType<StockCache>().As<ICache<StockRecord>>().SingleInstance();
             builder.RegisterType<StocksService>().As<IStocks>().SingleInstance();
-            builder.RegisterType<StockCacheManager>().As<ICacheManager>().SingleInstance();
+            builder.RegisterType<StockCacheManager>().As<ICacheManager<StockRecord>>().SingleInstance();
             builder.RegisterType<StockTrackersService>().As<IStockTrackers>().SingleInstance();
             builder.RegisterType<StockQuoteService>().As<IStockQuoteService>().SingleInstance();
             builder.RegisterType<StockUpdater>().As<IStockUpdater>().SingleInstance();
