@@ -18,22 +18,22 @@ namespace StocksTracker.API.Services
     public class StockTrackersService : IStockTrackers
     {
         private readonly IObjectFactory<StocksTrackerContext> _stocksTrackerContextFactory;
-        private readonly ICache<StockRecord> _stockCache;
+        private readonly ICacheManager<StockRecord> _cacheManager;
         private readonly IStockUpdater _stockUpdater;
 
         /// <summary>
         /// Instantiates the StockTrackersService class.
         /// </summary>
         /// <param name="stocksTrackerContextFactory">Reference to a factory that provides <see cref="StocksTrackerContext"/> objects.</param>
-        /// <param name="stockCache">Reference to the stock cache object.</param>
+        /// <param name="cacheManager">Reference to the stock cache object.</param>
         /// <param name="stockUpdater">Reference to an object that can update stocks.</param>
         public StockTrackersService(
             IObjectFactory<StocksTrackerContext> stocksTrackerContextFactory,
-            ICache<StockRecord> stockCache,
+            ICacheManager<StockRecord> cacheManager,
             IStockUpdater stockUpdater)
         {
             _stocksTrackerContextFactory = stocksTrackerContextFactory;
-            _stockCache = stockCache;
+            _cacheManager = cacheManager;
             _stockUpdater = stockUpdater;
         }
 
@@ -53,11 +53,11 @@ namespace StocksTracker.API.Services
                 // update stocks
                 var stockTrackerStocksIds = stockTracker.StockTrackerStocks.Select(stock => stock.StockId).ToList();
                 var updateOperationResult = await
-                    _stockUpdater.UpdateStocksQuoteDataAsync(stockTrackerStocksIds.Distinct().Select(i => _stockCache.GetById(i)));
+                    _stockUpdater.UpdateStocksQuoteDataAsync(stockTrackerStocksIds.Distinct().Select(i => _cacheManager.GetCachedObject(i)));
                 
                 // return
                 var returnObject = stockTracker.MapStockTrackerRecord();
-                returnObject.Stocks = stockTrackerStocksIds.Select(i => _stockCache.GetById(i)).ToArray();
+                returnObject.Stocks = stockTrackerStocksIds.Select(i => _cacheManager.GetCachedObject(i)).ToArray();
 
                 return returnObject;
             }
@@ -83,13 +83,13 @@ namespace StocksTracker.API.Services
                 var updateOperationResult =
                     await _stockUpdater.UpdateStocksQuoteDataAsync(
                             stockTrackersDictionary.Values.SelectMany(
-                                ints => ints.Distinct().Select(i => _stockCache.GetById(i))));
+                                ints => ints.Distinct().Select(i => _cacheManager.GetCachedObject(i))));
 
                 // return
                 stockTrackers.ForEach(tracker =>
                     {
                         var str = tracker.MapStockTrackerRecord();
-                        str.Stocks = stockTrackersDictionary[tracker.StockTrackerId].Select(i => _stockCache.GetById(i)).ToArray();
+                        str.Stocks = stockTrackersDictionary[tracker.StockTrackerId].Select(i => _cacheManager.GetCachedObject(i)).ToArray();
                         returnStockTrackers.Add(str);
                     });
             }
@@ -189,7 +189,7 @@ namespace StocksTracker.API.Services
 
                 var returnObject = stockTracker.MapStockTrackerRecord();
                 returnObject.Stocks =
-                    stockTracker.StockTrackerStocks.Select(stock => _stockCache.GetById(stock.StockId)).ToArray();
+                    stockTracker.StockTrackerStocks.Select(stock => _cacheManager.GetCachedObject(stock.StockId)).ToArray();
 
                 return returnObject;
             }

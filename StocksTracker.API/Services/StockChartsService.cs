@@ -13,11 +13,11 @@ namespace StocksTracker.API.Services
     /// </summary>
     public class StockChartsService : IStockChartsService
     {
-        private readonly ICache<StockRecord> _stockCache;
+        private readonly ICacheManager<StockRecord> _cacheManager;
 
-        public StockChartsService(ICache<StockRecord> stockCache)
+        public StockChartsService(ICacheManager<StockRecord> cacheManager)
         {
-            _stockCache = stockCache;
+            _cacheManager = cacheManager;
         }
 
         /// <see cref="IStockChartsService.GetStockChartResource"/>
@@ -26,12 +26,12 @@ namespace StocksTracker.API.Services
             StockRecord stock;
             if (chartQueryParameters.QueryById)
             {
-                stock = _stockCache.GetById(chartQueryParameters.StockId);
+                stock = _cacheManager.GetCachedObject(chartQueryParameters.StockId);
             }
             else
             {
                 stock =
-                    _stockCache.GetAll()
+                    _cacheManager. GetAllCachedObjects()
                         .SingleOrDefault(
                             record =>
                                 String.Equals(record.TickerSymbol, chartQueryParameters.TickerSymbol,

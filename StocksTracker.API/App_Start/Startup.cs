@@ -1,6 +1,7 @@
 ﻿using System.Web;
 using Autofac;
 using Core.Framework.API.Data;
+using Core.Framework.API.Stocks;
 using Core.Framework.API.Support;
 using Data.Context;
 using Microsoft.AspNet.Identity;
@@ -23,7 +24,7 @@ namespace StocksTracker.API
             OAuthOptions = iocContainer.Resolve<OAuthAuthorizationServerOptions>();
             GitHubOAuthOptions = iocContainer.Resolve<GitHubAuthenticationOptions>();
             StocksTrackerContextFactory = iocContainer.Resolve<IObjectFactory<StocksTrackerContext>>();
-            StocksCacheManager = iocContainer.Resolve<ICacheManager>();
+            StocksCacheManager = iocContainer.Resolve<ICacheManager<StockRecord>>();
         }
 
         /// <summary>
@@ -41,7 +42,7 @@ namespace StocksTracker.API
         /// <summary>
         /// Gets a reference to an ICacheManager object.
         /// </summary>
-        private static ICacheManager StocksCacheManager { get; set; }
+        private static ICacheManager<StockRecord> StocksCacheManager { get; set; }
 
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
@@ -92,7 +93,7 @@ namespace StocksTracker.API
 
         private static void LoadCaches()
         {
-            StocksCacheManager.LoadDataCache();
+            StocksCacheManager.InitializeCache();
         }
     }
 }
